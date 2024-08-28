@@ -85,9 +85,8 @@ jobs:
           instance-ids: ${{ secrets.AWS_EC2_INSTANCE_ID }}
           working-directory: /home/ssm-user
           command: |
-            cd
-            sudo su
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull $NAME/$REPO:latest
-            docker system prune -a -f
-            docker run --env-file .env -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 $NAME/$REPO:latest
+              echo "Test"
+              sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+              sudo docker pull $NAME/$REPO:latest
+              sudo docker system prune -a -f
+              sudo docker run --env-file .env -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 $NAME/$REPO:latest
