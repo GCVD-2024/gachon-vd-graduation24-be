@@ -87,4 +87,4 @@ jobs:
           command: |
               sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
               sudo docker system prune -a -f
-              sudo docker run --env-file .env -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 $NAME/$REPO:latest -d
+              sudo docker run -d --env-file .env -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 gcvd2024/springboot-prod:latest
