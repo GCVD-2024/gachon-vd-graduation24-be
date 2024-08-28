@@ -38,3 +38,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build -x test
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: build/libs/*.jar
