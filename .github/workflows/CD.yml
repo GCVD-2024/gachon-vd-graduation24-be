@@ -1,8 +1,6 @@
 name: CD using AWS SSM
 
 on:
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
     inputs:
       logLevel:
