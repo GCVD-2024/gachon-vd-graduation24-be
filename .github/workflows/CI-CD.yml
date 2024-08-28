@@ -85,6 +85,8 @@ jobs:
           instance-ids: ${{ secrets.AWS_EC2_INSTANCE_ID }}
           working-directory: /home/ssm-user
           command: |
+            cd
+            sudo su
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull $NAME/$REPO:latest
             docker system prune -a -f
