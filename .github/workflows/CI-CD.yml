@@ -49,6 +49,7 @@ jobs:
     name: CD - Deploy using AWS SSM
     runs-on: ubuntu-latest
     needs: build  # build job이 성공한 후에만 실행됨
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # master 브랜치에 push 되었을 경우에만 실행
 
     steps:
       - name: Checkout repository
