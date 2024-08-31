@@ -23,7 +23,7 @@ class WorkService(
         name: String,
         title: String,
     ): WorkResponse.DetailWork {
-        val detailWork = workRepository.findByTitleAndStudent_StudentName(name, title)
+        val detailWork = workRepository.findByStudent_StudentNameAndTitle(name, title)
         return WorkConverter.toDetailWork(detailWork)
     }
 }

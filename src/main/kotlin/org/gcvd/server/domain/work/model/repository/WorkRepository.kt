@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface WorkRepository : JpaRepository<Work, Long> {
     fun findAllByCategory(category: String): List<Work>
 
-    fun findByTitleAndStudent_StudentName(
+    fun findByStudent_StudentNameAndTitle(
         studentName: String,
         title: String,
     ): Work?
