@@ -26,7 +26,7 @@ class GuestbookControllerTest : AnnotationSpec() {
     }
 
     @Test
-    fun getGuestBookList() {
+    fun getGuestBookListTest() {
         // Given
         every { guestbookService.getGuestBookList() } returns
             GuestbookResponse.GuestbookList(
@@ -41,7 +41,7 @@ class GuestbookControllerTest : AnnotationSpec() {
     }
 
     @Test
-    fun createGuestBook() {
+    fun createGuestBookTest() {
         // Given
         val request =
             GuestbookRequest.CreateGuestBook(

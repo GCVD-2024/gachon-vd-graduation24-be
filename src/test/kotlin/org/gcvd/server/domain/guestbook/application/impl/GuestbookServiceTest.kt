@@ -26,7 +26,7 @@ class GuestbookServiceTest : AnnotationSpec() {
     }
 
     @Test
-    fun getGuestBookList() {
+    fun getGuestBookListTest() {
         // Given
         val guestbooks =
             listOf(
@@ -46,7 +46,7 @@ class GuestbookServiceTest : AnnotationSpec() {
     }
 
     @Test
-    fun createGuestBook() {
+    fun createGuestBookTest() {
         // Given
         val request =
             Guestbook(
