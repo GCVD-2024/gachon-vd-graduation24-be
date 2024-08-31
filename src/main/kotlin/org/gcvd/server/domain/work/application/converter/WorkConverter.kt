@@ -13,6 +13,7 @@ class WorkConverter {
             val workList =
                 works.map {
                     WorkResponse.WorkInfo(
+                        category = it.category,
                         title = it.title,
                         studentName = it.student.studentName,
                         thumbnailUrl = it.thumbnail,
