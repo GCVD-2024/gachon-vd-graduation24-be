@@ -6,6 +6,7 @@ class WorkResponse {
     )
 
     data class WorkInfo(
+        val category: String,
         val studentName: String,
         val title: String,
         val thumbnailUrl: String,
