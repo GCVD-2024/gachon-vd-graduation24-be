@@ -7,7 +7,7 @@ interface WorkRepository : JpaRepository<Work, Long> {
     fun findAllByCategory(category: String): List<Work>
 
     fun findByTitleAndStudent_StudentName(
-        title: String,
         studentName: String,
+        title: String,
     ): Work?
 }
