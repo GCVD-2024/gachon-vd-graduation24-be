@@ -10,6 +10,11 @@ class WorkService(
     private val workRepository: WorkRepository,
 ) {
     fun getWorksList(category: String): WorkResponse.WorkList {
+        if (category.equals("All", ignoreCase = true)) {
+            val works = workRepository.findAll()
+            return WorkConverter.toWorkList(works)
+        }
+
         val works = workRepository.findAllByCategory(category)
         return WorkConverter.toWorkList(works)
     }
@@ -18,7 +23,7 @@ class WorkService(
         name: String,
         title: String,
     ): WorkResponse.DetailWork {
-        val detailWork = workRepository.findByTitleAndStudent_StudentName(title, name)
+        val detailWork = workRepository.findByTitleAndStudent_StudentName(name, title)
         return WorkConverter.toDetailWork(detailWork)
     }
 }
