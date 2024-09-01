@@ -1,6 +1,7 @@
 package org.gcvd.server.domain.work.ui
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gcvd.server.common.response.ResponseDto
 import org.gcvd.server.domain.work.application.impl.WorkService
@@ -20,13 +21,13 @@ class WorkController(
     @Operation(summary = "카테고리별 작업물 리스트 조회")
     @GetMapping("")
     fun getWorksList(
-        @RequestParam category: String,
+        @Schema(description = "ALL / UX / Brand / Graphic / Illust / Media") @RequestParam category: String,
     ): ResponseDto<WorkResponse.WorkList> = ResponseDto.onSuccess(workService.getWorksList(category))
 
     @Operation(summary = "작업물 상세 내용 조회")
     @GetMapping("/{name}/{title}")
     fun getDetailWork(
-        @PathVariable name: String,
-        @PathVariable title: String,
+        @Schema(description = "학생명") @PathVariable name: String,
+        @Schema(description = "작품명") @PathVariable title: String,
     ): ResponseDto<WorkResponse.DetailWork> = ResponseDto.onSuccess(workService.getDetailWork(name, title))
 }

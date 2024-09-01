@@ -2,9 +2,11 @@ package org.gcvd.server.common.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonPropertyOrder
+import io.swagger.v3.oas.annotations.Hidden
 import org.gcvd.server.common.code.SuccessStatus
 import org.springframework.http.HttpStatus
 
+@Hidden
 @JsonPropertyOrder("isSuccess", "code", "message", "result")
 data class ResponseDto<T>(
     @field:JsonProperty("isSuccess")
