@@ -25,13 +25,19 @@ class WorkControllerTest : AnnotationSpec() {
     @Test
     fun getWorksListTest() {
         // Given
-        every { workService.getWorksList(any()) } returns
+        val category = "All"
+        val currentPage = 5
+
+        every { workService.getWorksList(any<String>(), any<Int>()) } returns
             WorkResponse.WorkList(
-                emptyList(),
+                currentPage = 1,
+                totalPage = 1,
+                totalWorks = 1,
+                works = emptyList(),
             )
 
         // When
-        val expectedResponse = workController.getWorksList("All")
+        val expectedResponse = workController.getWorksList(category, currentPage)
 
         // Then
         expectedResponse.shouldBeTypeOf<ResponseDto<WorkResponse.WorkList>>()
@@ -40,7 +46,7 @@ class WorkControllerTest : AnnotationSpec() {
     @Test
     fun getDetailWorkTest() {
         // Given
-        every { workService.getDetailWork(any(), any()) } returns
+        every { workService.getDetailWork(any<String>(), any<String>()) } returns
             WorkResponse.DetailWork(
                 studentName = "",
                 studentId = "",
