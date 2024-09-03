@@ -2,16 +2,20 @@ package org.gcvd.server.domain.work.application.converter
 
 import org.gcvd.server.domain.work.model.entity.Work
 import org.gcvd.server.domain.work.ui.dto.WorkResponse
+import org.springframework.data.domain.Page
 
 class WorkConverter {
     companion object {
-        fun toWorkList(works: List<Work>): WorkResponse.WorkList {
-            if (works.isEmpty()) {
-                return WorkResponse.WorkList(emptyList())
+        fun toWorkList(
+            works: Page<Work>,
+            currentPage: Int,
+        ): WorkResponse.WorkList {
+            if (works.isEmpty) {
+                return WorkResponse.WorkList(0, 0, 0, emptyList())
             }
 
             val workList =
-                works.map {
+                works.toList().map {
                     WorkResponse.WorkInfo(
                         category = it.category,
                         title = it.title,
@@ -19,7 +23,7 @@ class WorkConverter {
                         thumbnailUrl = it.thumbnail,
                     )
                 }
-            return WorkResponse.WorkList(workList)
+            return WorkResponse.WorkList(currentPage, works.totalPages, works.totalElements.toInt(), workList)
         }
 
         fun toDetailWork(work: Work?): WorkResponse.DetailWork {

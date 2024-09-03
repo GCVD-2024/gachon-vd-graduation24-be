@@ -22,7 +22,8 @@ class WorkController(
     @GetMapping("")
     fun getWorksList(
         @Schema(description = "ALL / UX / Brand / Graphic / Illust / Media") @RequestParam category: String,
-    ): ResponseDto<WorkResponse.WorkList> = ResponseDto.onSuccess(workService.getWorksList(category))
+        @Schema(description = "페이지 번호") @RequestParam currentPage: Int,
+    ): ResponseDto<WorkResponse.WorkList> = ResponseDto.onSuccess(workService.getWorksList(category, currentPage))
 
     @Operation(summary = "작업물 상세 내용 조회")
     @GetMapping("/{name}/{title}")

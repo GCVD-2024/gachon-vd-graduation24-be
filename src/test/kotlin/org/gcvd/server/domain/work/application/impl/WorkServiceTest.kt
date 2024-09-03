@@ -10,6 +10,8 @@ import org.gcvd.server.domain.work.model.entity.Work
 import org.gcvd.server.domain.work.model.repository.WorkRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import kotlin.test.Test
 
 @SpringBootTest
@@ -27,31 +29,16 @@ class WorkServiceTest : AnnotationSpec() {
     fun getWorksListTest() {
         // Given
         val category = "All"
-        val works =
-            listOf(
-                Work(
-                    category = "All",
-                    title = "title",
-                    subtitle = "subtitle",
-                    description = "description",
-                    detailArt = "detailArt",
-                    thumbnail = "thumbnail",
-                    student =
-                        Student(
-                            studentId = "studentId",
-                            studentName = "studentName",
-                            contact = "contact",
-                        ),
-                ),
-            )
-        every { workRepository.findAll() } returns works
-        every { workRepository.findAllByCategory(any()) } returns works
+        val currentPage = 5
+
+        every { workRepository.findAll(any<Pageable>()) } returns Page.empty()
+        every { workRepository.findAllByCategory(any<String>(), any<Pageable>()) } returns Page.empty()
 
         // When
-        val worksList = workService.getWorksList(category)
+        val worksList = workService.getWorksList(category, currentPage)
 
         // Then
-        worksList.shouldBeEqual(WorkConverter.toWorkList(works))
+        worksList.shouldBeEqual(WorkConverter.toWorkList(Page.empty(), currentPage))
     }
 
     @Test
@@ -72,7 +59,8 @@ class WorkServiceTest : AnnotationSpec() {
                         contact = "contact",
                     ),
             )
-        every { workRepository.findByTitleAndStudent_StudentName("studentName", "title") } returns works
+
+        every { workRepository.findByStudent_StudentNameAndTitle(any<String>(), any<String>()) } returns works
 
         // When
         val detailWork = workService.getDetailWork("studentName", "title")
