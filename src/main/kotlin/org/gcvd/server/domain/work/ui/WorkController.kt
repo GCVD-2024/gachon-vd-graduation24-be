@@ -18,11 +18,17 @@ import org.springframework.web.bind.annotation.RestController
 class WorkController(
     private val workService: WorkService,
 ) {
+    /**
+     * Todo
+     * request : page, category
+     * response : 페이지번호, 총페이지수, 전체개수, 10개 데이터
+     */
     @Operation(summary = "카테고리별 작업물 리스트 조회")
     @GetMapping("")
     fun getWorksList(
         @Schema(description = "ALL / UX / Brand / Graphic / Illust / Media") @RequestParam category: String,
-    ): ResponseDto<WorkResponse.WorkList> = ResponseDto.onSuccess(workService.getWorksList(category))
+        @Schema(description = "페이지 번호") @RequestParam currentPage: Int,
+    ): ResponseDto<WorkResponse.WorkList> = ResponseDto.onSuccess(workService.getWorksList(category, currentPage))
 
     @Operation(summary = "작업물 상세 내용 조회")
     @GetMapping("/{name}/{title}")

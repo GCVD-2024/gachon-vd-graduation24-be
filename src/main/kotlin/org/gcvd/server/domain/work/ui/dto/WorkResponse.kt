@@ -2,6 +2,9 @@ package org.gcvd.server.domain.work.ui.dto
 
 class WorkResponse {
     data class WorkList(
+        val currentPage: Int,
+        val totalPage: Int,
+        val totalWorks: Int,
         val works: List<WorkInfo>,
     )
 
