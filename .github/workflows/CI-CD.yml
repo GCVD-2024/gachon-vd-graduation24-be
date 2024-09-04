@@ -87,6 +87,6 @@ jobs:
           working-directory: /home/ssm-user
           command: |
               sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-              sudo docker system prune -a -f
+              sudo docker system prune -f
               sudo docker pull gcvd2024/springboot-prod:latest
-              sudo docker-compose up -d
+              sudo docker service update --image gcvd2024/springboot-prod:latest spring-app-stack_spring-app
