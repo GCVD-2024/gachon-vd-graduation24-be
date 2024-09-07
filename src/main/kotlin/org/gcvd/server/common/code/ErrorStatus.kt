@@ -13,6 +13,8 @@ enum class ErrorStatus(
     FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON_403", "금지된 요청입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "COMMON_405", "지원하지 않는 Http Method 입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러가 발생했습니다."),
+
+    DUPLICATE_USER(HttpStatus.BAD_REQUEST, "USER_400_001", "이미 조회한 사용자입니다."),
     ;
 
     override val reason: ResponseDto.ErrorReasonDto
