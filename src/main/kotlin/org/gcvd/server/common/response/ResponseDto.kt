@@ -16,7 +16,7 @@ data class ResponseDto<T>(
     @field:JsonProperty("message")
     private val message: String,
     @field:JsonProperty("result")
-    private val result: T,
+    private val result: T?,
 ) {
     data class ErrorReasonDto(
         val httpStatus: HttpStatus? = null,
@@ -33,13 +33,23 @@ data class ResponseDto<T>(
     )
 
     companion object {
-        // 성공한 경우
         fun <T> onSuccess(result: T): ResponseDto<T> =
             ResponseDto(
                 isSuccess = true,
                 code = SuccessStatus.OK.code,
                 message = SuccessStatus.OK.message,
                 result = result,
+            )
+
+        fun <T> onFailure(
+            code: String,
+            message: String,
+        ): ResponseDto<T> =
+            ResponseDto(
+                isSuccess = false,
+                code = code,
+                message = message,
+                result = null,
             )
     }
 }

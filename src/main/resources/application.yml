@@ -19,6 +19,11 @@ spring:
         username: root
         password: 1234
 
+    data:
+        redis:
+            host: localhost
+            port: 6380
+
 ---
 spring.config.activate.on-profile: prod
 
@@ -47,3 +52,9 @@ spring:
         url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
+
+
+    data:
+        redis:
+            host: ${REDIS_HOST}
+            port: ${REDIS_PORT}
