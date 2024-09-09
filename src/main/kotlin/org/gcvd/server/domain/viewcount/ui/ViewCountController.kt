@@ -11,7 +11,6 @@ import org.gcvd.server.domain.viewcount.application.impl.ViewCountService
 import org.gcvd.server.domain.viewcount.model.entity.ViewCount
 import org.gcvd.server.domain.viewcount.ui.dto.ViewCountResponse
 import org.springframework.http.ResponseCookie
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @Tag(name = "ViewCount", description = "조회수 API")
-@CrossOrigin(origins = ["*"], allowedHeaders = ["*"])
 @RestController
 @RequestMapping("api/viewcount")
 class ViewCountController(
