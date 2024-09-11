@@ -1,22 +1,22 @@
 package org.gcvd.server.domain.guestbook.ui
 
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.types.shouldBeTypeOf
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.beInstanceOf
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.gcvd.server.common.response.ResponseDto
+import org.gcvd.server.domain.guestbook.application.converter.GuestbookConverter
 import org.gcvd.server.domain.guestbook.application.impl.GuestbookService
-import org.gcvd.server.domain.guestbook.model.entity.Guestbook
 import org.gcvd.server.domain.guestbook.ui.dto.GuestbookRequest
 import org.gcvd.server.domain.guestbook.ui.dto.GuestbookResponse
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import java.time.LocalDateTime
-import kotlin.test.Test
 
 @WebMvcTest
 class GuestbookControllerTest : AnnotationSpec() {
-    @Autowired private lateinit var guestbookController: GuestbookController
+    private lateinit var guestbookController: GuestbookController
     private lateinit var guestbookService: GuestbookService
 
     @BeforeEach
@@ -26,39 +26,40 @@ class GuestbookControllerTest : AnnotationSpec() {
     }
 
     @Test
-    fun getGuestBookListTest() {
+    fun getGuestBookListShouldReturnResponseDtoWithAllSavedGuestbooks() {
         // Given
-        every { guestbookService.getGuestBookList() } returns
+        val guestbookList =
             GuestbookResponse.GuestbookList(
                 emptyList(),
             )
+        val expectedResponse = ResponseDto.onSuccess(guestbookList)
+
+        every { guestbookService.getGuestBookList() } returns guestbookList
 
         // When
-        val expectedResponse = guestbookController.getGuestBookList()
+        val actualResponse = guestbookController.getGuestBookList()
 
         // Then
-        expectedResponse.shouldBeTypeOf<ResponseDto<GuestbookResponse.GuestbookList>>()
+        actualResponse shouldBe expectedResponse
+        verify(exactly = 1) { guestbookService.getGuestBookList() }
     }
 
     @Test
-    fun createGuestBookTest() {
+    fun createGuestBookShouldSaveRequestInDBAndReturnResponseDtoWithNoContent() {
         // Given
         val request =
             GuestbookRequest.CreateGuestBook(
                 nickname = "홍길동",
                 content = "안녕하세요",
             )
-        every { guestbookService.createGuestBook(request) } returns
-            Guestbook(
-                nickname = "홍길동",
-                content = "안녕하세요",
-                createdAt = LocalDateTime.now(),
-            )
+
+        every { guestbookService.createGuestBook(request) } returns GuestbookConverter.toGuestBook(request)
 
         // When
-        val expectedResponse = guestbookController.createGuestBook(request)
+        val actualResponse = guestbookController.createGuestBook(request)
 
         // Then
-        expectedResponse.shouldBeTypeOf<ResponseDto<Nothing?>>()
+        actualResponse should beInstanceOf<ResponseDto<Nothing?>>()
+        verify(exactly = 1) { guestbookService.createGuestBook(request) }
     }
 }

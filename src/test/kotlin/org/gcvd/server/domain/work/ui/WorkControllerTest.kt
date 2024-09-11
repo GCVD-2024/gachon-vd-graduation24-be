@@ -1,19 +1,18 @@
 package org.gcvd.server.domain.work.ui
 
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.types.shouldBeTypeOf
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.gcvd.server.common.response.ResponseDto
 import org.gcvd.server.domain.work.application.impl.WorkService
 import org.gcvd.server.domain.work.ui.dto.WorkResponse
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import kotlin.test.Test
 
 @WebMvcTest
 class WorkControllerTest : AnnotationSpec() {
-    @Autowired private lateinit var workController: WorkController
+    private lateinit var workController: WorkController
     private lateinit var workService: WorkService
 
     @BeforeEach
@@ -23,46 +22,53 @@ class WorkControllerTest : AnnotationSpec() {
     }
 
     @Test
-    fun getWorksListTest() {
+    fun getWorksListShouldReturnResponseDtoWithWorks() {
         // Given
         val category = "All"
         val currentPage = 5
-
-        every { workService.getWorksList(any<String>(), any<Int>()) } returns
+        val workList =
             WorkResponse.WorkList(
                 currentPage = 1,
                 totalPage = 1,
                 totalWorks = 1,
                 works = emptyList(),
             )
+        val expectedResponse = ResponseDto.onSuccess(workList)
+
+        every { workService.getWorksList(any<String>(), any<Int>()) } returns workList
 
         // When
-        val expectedResponse = workController.getWorksList(category, currentPage)
+        val actualResponse = workController.getWorksList(category, currentPage)
 
         // Then
-        expectedResponse.shouldBeTypeOf<ResponseDto<WorkResponse.WorkList>>()
+        actualResponse shouldBe expectedResponse
+        verify(exactly = 1) { workService.getWorksList(category, currentPage) }
     }
 
     @Test
-    fun getDetailWorkTest() {
+    fun getDetailWorkShouldReturnResponseDtoWithSpecificWorkInformationUsingStudentNameAndTitle() {
         // Given
-        every { workService.getDetailWork(any<String>(), any<String>()) } returns
+        val detailWork =
             WorkResponse.DetailWork(
-                studentName = "",
-                studentId = "",
-                contact = "",
-                category = "",
-                title = "",
-                subtitle = "",
-                description = "",
-                detailArtUrl = "",
-                thumbnailUrl = "",
+                studentName = "홍길동",
+                studentId = "201900000",
+                contact = "010-1234-5678",
+                category = "졸업작품",
+                title = "졸업작품 제목",
+                subtitle = "졸업작품 부제",
+                description = "졸업작품 설명",
+                detailArtUrl = "detail_url_1",
+                thumbnailUrl = "thumbnail_url_1",
             )
+        val expectedResponse = ResponseDto.onSuccess(detailWork)
+
+        every { workService.getDetailWork(any<String>(), any<String>()) } returns detailWork
 
         // When
-        val expectedResponse = workController.getDetailWork("홍길동", "졸업작품")
+        val actualResponse = workController.getDetailWork("홍길동", "졸업작품 제목")
 
         // Then
-        expectedResponse.shouldBeTypeOf<ResponseDto<WorkResponse.DetailWork>>()
+        actualResponse shouldBe expectedResponse
+        verify(exactly = 1) { workService.getDetailWork("홍길동", "졸업작품 제목") }
     }
 }

@@ -25,7 +25,7 @@ class ViewCountServiceTest : AnnotationSpec() {
     }
 
     @Test
-    fun getViewCountTest() {
+    fun getViewCountShouldReturnTheSumOfViewCountsFromRedisAndMySQL() {
         // Given
         val expectedCount = 5
 

@@ -1,22 +1,19 @@
 package org.gcvd.server.domain.guestbook.application.impl
 
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.equals.shouldBeEqual
-import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.gcvd.server.domain.guestbook.application.converter.GuestbookConverter
 import org.gcvd.server.domain.guestbook.model.entity.Guestbook
 import org.gcvd.server.domain.guestbook.model.repository.GuestbookRepository
 import org.gcvd.server.domain.guestbook.ui.dto.GuestbookRequest
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import java.time.LocalDateTime
-import kotlin.test.Test
 
 @SpringBootTest
 class GuestbookServiceTest : AnnotationSpec() {
-    @Autowired private lateinit var guestbookService: GuestbookService
+    private lateinit var guestbookService: GuestbookService
     private lateinit var guestbookRepository: GuestbookRepository
 
     @BeforeEach
@@ -26,38 +23,39 @@ class GuestbookServiceTest : AnnotationSpec() {
     }
 
     @Test
-    fun getGuestBookListTest() {
+    fun getGuestBookListShouldReturnConvertedListOfAllGuestbooks() {
         // Given
         val guestbooks =
             listOf(
                 Guestbook(
                     nickname = "홍길동",
                     content = "안녕하세요",
-                    createdAt = LocalDateTime.now(),
                 ),
             )
+        val expectedResult = GuestbookConverter.toGuestbookList(guestbooks)
+
         every { guestbookRepository.findAll() } returns guestbooks
 
         // When
-        val expectedGuestbooks = guestbookService.getGuestBookList()
+        val actualResult = guestbookService.getGuestBookList()
 
         // Then
-        expectedGuestbooks.shouldBeEqual(GuestbookConverter.toGuestbookList(guestbooks))
+        actualResult shouldBe expectedResult
+        verify(exactly = 1) { guestbookRepository.findAll() }
     }
 
     @Test
-    fun createGuestBookTest() {
+    fun createGuestBookShouldSaveAndReturnCreatedGuestbook() {
         // Given
         val request =
             Guestbook(
                 nickname = "홍길동",
                 content = "안녕하세요",
-                createdAt = LocalDateTime.now(),
             )
         every { guestbookRepository.save(any()) } returns request
 
         // When
-        val guestbook =
+        val actualResult =
             guestbookService.createGuestBook(
                 GuestbookRequest.CreateGuestBook(
                     request.nickname,
@@ -66,9 +64,12 @@ class GuestbookServiceTest : AnnotationSpec() {
             )
 
         // Then
-        guestbook.should {
-            it.nickname.shouldBeEqual(request.nickname)
-            it.content.shouldBeEqual(request.content)
+        actualResult.nickname shouldBe request.nickname
+        actualResult.content shouldBe request.content
+        verify(exactly = 1) {
+            guestbookRepository.save(
+                match { it.nickname == request.nickname && it.content == request.content },
+            )
         }
     }
 }
