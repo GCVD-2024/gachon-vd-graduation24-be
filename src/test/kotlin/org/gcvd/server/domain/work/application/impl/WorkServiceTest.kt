@@ -1,23 +1,22 @@
 package org.gcvd.server.domain.work.application.impl
 
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.gcvd.server.domain.work.application.converter.WorkConverter
 import org.gcvd.server.domain.work.model.entity.Student
 import org.gcvd.server.domain.work.model.entity.Work
 import org.gcvd.server.domain.work.model.repository.WorkRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import kotlin.test.Test
 
 @SpringBootTest
 class WorkServiceTest : AnnotationSpec() {
-    @Autowired private lateinit var workService: WorkService
-    private lateinit var workRepository: WorkRepository
+    protected lateinit var workService: WorkService
+    protected lateinit var workRepository: WorkRepository
 
     @BeforeEach
     fun setUp() {
@@ -26,23 +25,58 @@ class WorkServiceTest : AnnotationSpec() {
     }
 
     @Test
-    fun getWorksListTest() {
+    fun getWorksListShouldReturnAllWorksWhenCategoryIsAll() {
         // Given
         val category = "All"
         val currentPage = 5
+        val expectedResult = WorkConverter.toWorkList(Page.empty(), currentPage)
 
         every { workRepository.findAll(any<Pageable>()) } returns Page.empty()
-        every { workRepository.findAllByCategory(any<String>(), any<Pageable>()) } returns Page.empty()
 
         // When
-        val worksList = workService.getWorksList(category, currentPage)
+        val actualResult = workService.getWorksList(category, currentPage)
 
         // Then
-        worksList.shouldBeEqual(WorkConverter.toWorkList(Page.empty(), currentPage))
+        actualResult shouldBe expectedResult
+        verify(exactly = 1) { workRepository.findAll(any<Pageable>()) }
+        verify(exactly = 0) {
+            workRepository.findAllByCategory(
+                any<String>(),
+                any<Pageable>(),
+            )
+        }
     }
 
     @Test
-    fun getDetailWorkTest() {
+    fun getWorksListShouldReturnCategory_specificWorksWhenCategoryIsNotAll() {
+        // Given
+        val category = "UX"
+        val currentPage = 5
+        val expectedResult = WorkConverter.toWorkList(Page.empty(), currentPage)
+
+        every {
+            workRepository.findAllByCategory(
+                any<String>(),
+                any<Pageable>(),
+            )
+        } returns Page.empty()
+
+        // When
+        val actualResult = workService.getWorksList(category, currentPage)
+
+        // Then
+        actualResult shouldBe expectedResult
+        verify(exactly = 0) { workRepository.findAll(any<Pageable>()) }
+        verify(exactly = 1) {
+            workRepository.findAllByCategory(
+                any<String>(),
+                any<Pageable>(),
+            )
+        }
+    }
+
+    @Test
+    fun getDetailWorkShouldReturnCorrectWorkDetailsForGivenStudentNameAndTitle() {
         // Given
         val works =
             Work(
@@ -59,13 +93,25 @@ class WorkServiceTest : AnnotationSpec() {
                         contact = "contact",
                     ),
             )
+        val expectedResult = WorkConverter.toDetailWork(works)
 
-        every { workRepository.findByStudent_StudentNameAndTitle(any<String>(), any<String>()) } returns works
+        every {
+            workRepository.findByStudent_StudentNameAndTitle(
+                any<String>(),
+                any<String>(),
+            )
+        } returns works
 
         // When
-        val detailWork = workService.getDetailWork("studentName", "title")
+        val actualResult = workService.getDetailWork("studentName", "title")
 
         // Then
-        detailWork.shouldBeEqual(WorkConverter.toDetailWork(works))
+        actualResult shouldBe expectedResult
+        verify(exactly = 1) {
+            workRepository.findByStudent_StudentNameAndTitle(
+                any<String>(),
+                any<String>(),
+            )
+        }
     }
 }

@@ -22,12 +22,12 @@ class ViewCountControllerTest : AnnotationSpec() {
     }
 
     @Test
-    fun getViewCountTest() {
+    fun getViewCountShouldReturnResponseDtoWithViewCounts() {
         // Given
-        val expectedCount = 5
-        val expectedResponse = ResponseDto.onSuccess(ViewCountResponse.ViewCount(expectedCount))
+        val count = 5
+        val expectedResponse = ResponseDto.onSuccess(ViewCountResponse.ViewCount(count))
 
-        every { viewCountService.getViewCount() } returns ViewCountResponse.ViewCount(expectedCount)
+        every { viewCountService.getViewCount() } returns ViewCountResponse.ViewCount(count)
 
         // When
         val actualResponse = viewCountController.getViewCount()
