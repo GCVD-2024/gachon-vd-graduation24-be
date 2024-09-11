@@ -9,12 +9,12 @@ filters:
     targets: [ comment ]
   - label: ':bug: bug'
     regexs:
-      - /^- \[(x|X)\] Bug Fix\b/m
+      - /^- \[(x|X)\] Bug\b/m
     events: [ pull_request, issues ]
     targets: [ comment ]
   - label: ':memo: documentation'
     regexs:
-      - /^- \[(x|X)\] Documentation\b/m
+      - /^- \[(x|X)\] Document\b/m
     events: [ pull_request, issues ]
     targets: [ comment ]
   - label: ':art: style'
