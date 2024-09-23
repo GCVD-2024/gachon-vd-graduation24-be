@@ -21,6 +21,8 @@ data class Work(
     val detailArt: String,
     @Column(name = "thumbnail", length = 255, nullable = false)
     val thumbnail: String,
+    @Column(name = "video", length = 255, nullable = true)
+    val video: String?,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_idx")
     val student: Student,

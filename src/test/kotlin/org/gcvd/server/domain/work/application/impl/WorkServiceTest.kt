@@ -86,6 +86,7 @@ class WorkServiceTest : AnnotationSpec() {
                 description = "description",
                 detailArt = "detailArt",
                 thumbnail = "thumbnail",
+                video = "video",
                 student =
                     Student(
                         studentId = "studentId",

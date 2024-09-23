@@ -41,6 +41,7 @@ class WorkConverter {
                 description = work.description,
                 detailArtUrl = work.detailArt,
                 thumbnailUrl = work.thumbnail,
+                videoUrl = work.video,
             )
         }
     }
