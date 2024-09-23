@@ -25,6 +25,7 @@ class WorkResponse {
         val description: String,
         val detailArtUrl: String,
         val thumbnailUrl: String,
+        val videoUrl: String?,
     )
 
     companion object {
@@ -39,6 +40,7 @@ class WorkResponse {
                 description = "",
                 detailArtUrl = "",
                 thumbnailUrl = "",
+                videoUrl = "",
             )
     }
 }
