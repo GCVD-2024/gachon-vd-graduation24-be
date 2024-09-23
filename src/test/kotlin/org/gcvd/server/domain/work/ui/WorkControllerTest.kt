@@ -59,6 +59,7 @@ class WorkControllerTest : AnnotationSpec() {
                 description = "졸업작품 설명",
                 detailArtUrl = "detail_url_1",
                 thumbnailUrl = "thumbnail_url_1",
+                videoUrl = "video_url_1",
             )
         val expectedResponse = ResponseDto.onSuccess(detailWork)
 
