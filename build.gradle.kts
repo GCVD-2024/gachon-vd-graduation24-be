@@ -22,14 +22,17 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    // mysql
+    // database
     runtimeOnly("mysql:mysql-connector-java:8.0.33")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // cache
+    implementation("org.springframework.boot:spring-boot-starter-cache")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
