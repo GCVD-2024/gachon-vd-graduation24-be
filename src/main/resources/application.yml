@@ -24,6 +24,9 @@ spring:
             host: localhost
             port: 6380
 
+    cache:
+        type: simple
+
 ---
 spring.config.activate.on-profile: prod
 
@@ -53,8 +56,10 @@ spring:
         username: ${DB_USERNAME}
         password: ${DB_PASSWORD}
 
-
     data:
         redis:
             host: ${REDIS_HOST}
             port: ${REDIS_PORT}
+
+    cache:
+        type: simple
