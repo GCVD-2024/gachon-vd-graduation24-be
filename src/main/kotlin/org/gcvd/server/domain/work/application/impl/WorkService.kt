@@ -3,6 +3,7 @@ package org.gcvd.server.domain.work.application.impl
 import org.gcvd.server.domain.work.application.converter.WorkConverter
 import org.gcvd.server.domain.work.model.repository.WorkRepository
 import org.gcvd.server.domain.work.ui.dto.WorkResponse
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service
 class WorkService(
     private val workRepository: WorkRepository,
 ) {
+    @Cacheable(value = ["workList"], key = "#category + '_' + #currentPage")
     fun getWorksList(
         category: String,
         currentPage: Int,
@@ -32,6 +34,7 @@ class WorkService(
         )
     }
 
+    @Cacheable(value = ["workDetails"], key = "#name + '_' + #title")
     fun getDetailWork(
         name: String,
         title: String,
