@@ -12,8 +12,8 @@ class WebConfig : WebMvcConfigurer {
             .allowedOriginPatterns(
                 "http://localhost:5173",
                 "gcvd2024-dev.vercel.app",
-                "gcvd2024.com",
-                "www.gcvd2024.com",
+                "https://www.gcvd2024.com",
+                "https://gcvd2024.com",
             ).allowedMethods("GET", "POST", "OPTIONS")
             .allowCredentials(true)
     }
