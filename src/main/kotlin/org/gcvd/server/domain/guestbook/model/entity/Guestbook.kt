@@ -1,6 +1,7 @@
 package org.gcvd.server.domain.guestbook.model.entity
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "guestbook")
@@ -13,5 +14,6 @@ data class Guestbook(
     val nickname: String,
     @Column(name = "content", length = 255, nullable = false)
     val content: String,
-    val createdAt: String? = null,
+    @Column(name = "created_at", insertable = false, updatable = false)
+    val createdAt: LocalDateTime? = null,
 )
