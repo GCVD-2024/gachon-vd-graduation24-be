@@ -13,6 +13,5 @@ data class Guestbook(
     val nickname: String,
     @Column(name = "content", length = 255, nullable = false)
     val content: String,
-    @Column(name = "created_at", updatable = false)
     val createdAt: String? = null,
 )
