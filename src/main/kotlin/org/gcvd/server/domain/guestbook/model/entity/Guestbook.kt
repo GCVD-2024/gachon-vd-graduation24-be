@@ -2,7 +2,7 @@ package org.gcvd.server.domain.guestbook.model.entity
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 @Entity
 @Table(name = "guestbook")
@@ -17,5 +17,5 @@ data class Guestbook(
     val content: String,
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    val createdAt: LocalDateTime? = null,
+    val createdAt: ZonedDateTime? = null,
 )
