@@ -9,8 +9,10 @@ class WebConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry
             .addMapping("/**")
-            .allowedOriginPatterns("http://localhost:5173")
-            .allowedMethods("GET", "POST", "OPTIONS")
+            .allowedOriginPatterns(
+                "http://localhost:5173",
+                "gcvd2024-dev.vercel.app",
+            ).allowedMethods("GET", "POST", "OPTIONS")
             .allowCredentials(true)
     }
 }
