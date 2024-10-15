@@ -24,4 +24,7 @@ class GuestbookService(
     @CacheEvict(value = ["guestbook"], allEntries = true)
     fun createGuestBook(request: GuestbookRequest.CreateGuestBook) =
         guestbookRepository.save(GuestbookConverter.toGuestBook(request))
+
+    @CacheEvict(value = ["guestbook"], allEntries = true)
+    fun clearCache(): Boolean = true
 }

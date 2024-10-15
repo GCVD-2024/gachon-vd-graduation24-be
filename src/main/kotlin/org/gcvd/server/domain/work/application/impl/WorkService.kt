@@ -3,6 +3,7 @@ package org.gcvd.server.domain.work.application.impl
 import org.gcvd.server.domain.work.application.converter.WorkConverter
 import org.gcvd.server.domain.work.model.repository.WorkRepository
 import org.gcvd.server.domain.work.ui.dto.WorkResponse
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -42,6 +43,9 @@ class WorkService(
         WorkConverter.toDetailWork(
             workRepository.findByStudent_StudentNameAndTitle(name, title),
         )
+
+    @CacheEvict(value = ["workList", "workDetails"], allEntries = true)
+    fun clearCache(): Boolean = true
 
     companion object {
         private const val WORKS_PER_PAGE: Int = 10
