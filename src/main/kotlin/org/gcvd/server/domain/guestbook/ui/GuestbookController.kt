@@ -1,5 +1,6 @@
 package org.gcvd.server.domain.guestbook.ui
 
+import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.gcvd.server.common.response.ResponseDto
@@ -31,4 +32,8 @@ class GuestbookController(
         guestbookService.createGuestBook(request)
         return ResponseDto.onSuccess(null)
     }
+
+    @Hidden
+    @PostMapping("/clear")
+    fun clearCache(): ResponseDto<Boolean> = ResponseDto.onSuccess(guestbookService.clearCache())
 }
