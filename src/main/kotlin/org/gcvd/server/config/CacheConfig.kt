@@ -61,7 +61,7 @@ class CacheConfig {
                     RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer()),
                 ).serializeValuesWith(
                     RedisSerializationContext.SerializationPair.fromSerializer(serializer),
-                ).entryTtl(Duration.ofSeconds(30L))
+                ).entryTtl(Duration.ofDays(1L))
 
         return RedisCacheManager
             .builder(redisConnectionFactory)
